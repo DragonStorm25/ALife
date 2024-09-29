@@ -14,21 +14,21 @@ public class PhysicsEngine {
 
     private QuadTree particles;
     private double deltaTime;
-    private Map<Integer, Vector2D> forces;
-    private Map<Integer, Particle> particlesFromIds;
+    private Map<Integer, Vector2D> particleIdToForce;
+    private Map<Integer, Particle> idToParticle;
 
     public PhysicsEngine(double dt) {
         particles = new QuadTree(Vector2D.ZERO(), new Vector2D(128, 128));
         this.deltaTime = dt;
-        this.forces = new HashMap<>();
-        this.particlesFromIds = new HashMap<>();
+        this.particleIdToForce = new HashMap<>();
+        this.idToParticle = new HashMap<>();
     }
 
     public void doTimeStep() {
-        this.forces = new HashMap<>();
+        this.particleIdToForce = new HashMap<>();
         doTimeStep(particles);
-        for (Integer id : particlesFromIds.keySet()) {
-            doParticleTimeStep(particlesFromIds.get(id), forces.get(id));
+        for (Integer id : idToParticle.keySet()) {
+            doParticleTimeStep(idToParticle.get(id), particleIdToForce.get(id));
         }
     }
 
@@ -43,8 +43,8 @@ public class PhysicsEngine {
                         sumForce = sumForce.plus(ChargedParticle.getChargeForce(((ChargedParticle)p), ((ChargedParticle)nearbyParticles.get(j))));
                 }
             }
-            forces.put(p.getId(), sumForce);
-            particlesFromIds.put(p.getId(), p);
+            particleIdToForce.put(p.getId(), sumForce);
+            idToParticle.put(p.getId(), p);
         }
         if (qt.topLeft != null) doTimeStep(qt.topLeft);
         if (qt.topRight != null) doTimeStep(qt.topRight);
