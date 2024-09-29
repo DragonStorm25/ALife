@@ -69,7 +69,7 @@ public class QuadTree {
         List<Particle> actualParticles = new ArrayList<>();
         for (Particle p : possibleParticles) {
             final double px = p.getPosition().getX(), py = p.getPosition().getY();
-            final double pox = p.getPosition().getX(), poy = p.getPosition().getY();
+            final double pox = point.getX(), poy = point.getY();
             if ((px - pox) * (px - pox) + (py - poy) * (py - poy) < distance*distance)
                 actualParticles.add(p);
         }
