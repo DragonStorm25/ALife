@@ -1,7 +1,9 @@
 package src.physics;
 
+import src.util.Vector2D;
+
 public interface IPosition {
-    public double xPos = 0, yPos = 0;
+    public Vector2D pos = new Vector2D(0, 0);
 }
 
 

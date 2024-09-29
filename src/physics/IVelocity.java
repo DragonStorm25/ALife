@@ -1,5 +1,7 @@
 package src.physics;
 
+import src.util.Vector2D;
+
 public interface IVelocity extends IPosition {
-    public double xVel = 0, yVel = 0;
+    public Vector2D vel = new Vector2D(0, 0);
 }
