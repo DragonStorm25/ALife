@@ -8,12 +8,14 @@ import src.particles.Particle;
 
 public class QuadTree {
     private static final double MIN_SIZE = 1;
+    private static int ID_COUNTER = 0;
 
     public Vector2D minPoint, maxPoint, midPoint;
     public List<Particle> particles;
     public int maxParticlesBeforeSplit = 1;
     public QuadTree parent;
     public QuadTree topLeft, topRight, bottomLeft, bottomRight;
+    private final int id;
 
     public QuadTree(){
         this(null, Vector2D.ZERO(), Vector2D.ZERO());
@@ -24,6 +26,7 @@ public class QuadTree {
         this.minPoint = min;
         this.maxPoint = max;
         this.midPoint = min.plus(max).scale(0.5);
+        this.id = ID_COUNTER++;
     }
 
     public void insert(Particle p) {
@@ -102,6 +105,8 @@ public class QuadTree {
         if (!inBoundary(newPos))
             return;
 
+        QuadTree particleQuad = this.smallestTreeWithPoint(p.getPosition());
+        QuadTree newPosQuad = this.smallestTreeWithPoint(newPos);
         
         // Now to check which quad it's in
         if (newPos.getX() < this.midPoint.getX()) { // Left
@@ -240,5 +245,11 @@ public class QuadTree {
         s += indentString + "BottomLeft: " + (bottomLeft == null ? "null" : ("\n" + bottomLeft.toString(indents + 1))) + "\n";
         s += indentString + "BottomRight: " + (bottomLeft == null ? "null" : ("\n" + bottomLeft.toString(indents + 1))) + "\n";
         return s;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof QuadTree)) return false;
+        return this.id == ((QuadTree)other).id;
     }
 }
