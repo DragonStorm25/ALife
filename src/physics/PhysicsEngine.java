@@ -1,20 +1,19 @@
 package src.physics;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import src.particles.Particle;
+import src.util.QuadTree;
 import src.util.Vector2D;
 
 public class PhysicsEngine {
-    private List<Particle> particles;
+    private QuadTree particles;
     private double deltaTime;
 
-    public PhysicsEngine() {
-        this.particles = new ArrayList<>();
+    public PhysicsEngine(double dt) {
+        particles = new QuadTree(Vector2D.ZERO(), new Vector2D(128, 128));
+        this.deltaTime = dt;
     }
 
-    public static Particle doParticleTimeStep(Particle p, Vector2D force, double deltaTime) {
+    public void doParticleTimeStep(Particle p, Vector2D force, double deltaTime) {
         // k1 = f/m * dt
         final Vector2D a1 = force.scale(1.0/p.getMass());
         final Vector2D k1 = a1.scale(deltaTime);
@@ -35,6 +34,8 @@ public class PhysicsEngine {
         final Vector2D deltaV = k1.plus(k2.scale(2)).plus(k3.scale(2)).plus(k4).scale(1/6.0);
         final Vector2D newVel = p.getVelocity().plus(deltaV);
         final Vector2D newPos = p.getPosition().plus(newVel.scale(deltaTime));
-        return new Particle(newPos, newVel, p.getMass());
+        
+        p.setPosition(newPos);
+        p.setVelocity(newVel);
     }
 }
