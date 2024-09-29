@@ -35,4 +35,10 @@ public class Particle {
     public String toString() {
         return "Pos: " + this.pos + ", Vel: " + this.vel + ", Mass: " + this.mass;
     }
+
+    @Override
+    public boolean equals (Object other) {
+        if (!(other instanceof Particle)) return false;
+        return this.pos.equals(((Particle) other).pos) && this.vel.equals(((Particle) other).vel) && this.mass == ((Particle) other).mass;
+    }
 }
