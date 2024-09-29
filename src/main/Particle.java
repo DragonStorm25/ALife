@@ -26,9 +26,10 @@ abstract class ChargedParticle extends Particle {
     public double maxRange = 1;
     public double minRange = 0.1;
 
-    public static double getChargeForce(ChargedParticle c1, ChargedParticle c2) {
-        final double distance = c1.pos.plus(c2.pos.scale(-1)).getMagnitude();
-        final double mag = (ICharge.CHARGE_CONSTANT * c1.charge * c2.charge) / (distance * distance);
-        return ;
+    public static Vector2D getChargeForce(ChargedParticle c1, ChargedParticle c2) {
+        final Vector2D vectorBetween = c1.getPosition().plus(c2.getPosition().scale(-1));
+        final double distance = vectorBetween.getMagnitude();
+        final double mag = (CHARGE_CONSTANT * c1.charge * c2.charge) / (distance * distance);
+        return vectorBetween.normalized().scale(mag);
     }
 }
