@@ -7,7 +7,7 @@ public class Particle {
 
     private Vector2D pos, vel;
     private int mass;
-    private int id;
+    private final int id;
 
     public Particle(int mass) {
         this(Vector2D.ZERO(), mass);
@@ -42,6 +42,10 @@ public class Particle {
 
     public int getMass() {
         return this.mass;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public String toString() {
