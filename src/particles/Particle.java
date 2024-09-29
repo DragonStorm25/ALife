@@ -3,8 +3,11 @@ package src.particles;
 import src.util.Vector2D;
 
 public class Particle {
+    private static int ID_COUNTER = 0;
+
     private Vector2D pos, vel;
     private int mass;
+    private int id;
 
     public Particle(int mass) {
         this(Vector2D.ZERO(), mass);
@@ -18,6 +21,7 @@ public class Particle {
         this.pos = pos;
         this.vel = vel;
         this.mass = mass;
+        this.id = ID_COUNTER++;
     }
 
     public Vector2D getPosition() {
@@ -44,9 +48,14 @@ public class Particle {
         return "Pos: " + this.pos + ", Vel: " + this.vel + ", Mass: " + this.mass;
     }
 
+    public boolean equalsValue (Object other) {
+        if (!(other instanceof Particle)) return false;
+        return this.pos.equals(((Particle) other).pos) && this.vel.equals(((Particle) other).vel) && this.mass == ((Particle) other).mass;
+    }
+
     @Override
     public boolean equals (Object other) {
         if (!(other instanceof Particle)) return false;
-        return this.pos.equals(((Particle) other).pos) && this.vel.equals(((Particle) other).vel) && this.mass == ((Particle) other).mass;
+        return this.id == ((Particle)other).id;
     }
 }
