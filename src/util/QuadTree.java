@@ -78,11 +78,42 @@ public class QuadTree {
                 topLeft.remove(p);
             } else { // Bottom left
                 if (bottomLeft == null)
-                    bottomLeft = new QuadTree(new Vector2D(this.minPoint.getX(), this.midPoint.getY()), new Vector2D(this.midPoint.getX(), this.maxPoint.getY()));
+                    return;
                 bottomLeft.remove(p);
             }
         } else { // Right
             if (p.getPosition().getY() < this.midPoint.getY()) { // Top right
+                if (topRight == null)
+                    return;
+                topRight.remove(p);
+            } else { // Bottom right
+                if (bottomRight == null)
+                    return;
+                bottomRight.remove(p);
+            }
+        }
+    }
+
+    public void move(Particle p, Vector2D newPos) {
+        if (!inBoundary(p.getPosition()))
+            return;
+
+        if (!inBoundary(newPos))
+            return;
+
+        // Now to check which quad it's in
+        if (newPos.getX() < this.midPoint.getX()) { // Left
+            if (newPos.getY() < this.midPoint.getY()) { // Top left
+                if (topLeft == null)
+                    topLeft = new QuadTree(this.minPoint.clone(), this.midPoint.clone());
+                topLeft.remove(p);
+            } else { // Bottom left
+                if (bottomLeft == null)
+                    bottomLeft = new QuadTree(new Vector2D(this.minPoint.getX(), this.midPoint.getY()), new Vector2D(this.midPoint.getX(), this.maxPoint.getY()));
+                bottomLeft.remove(p);
+            }
+        } else { // Right
+            if (newPos.getY() < this.midPoint.getY()) { // Top right
                 if (topRight == null)
                     topRight = new QuadTree(new Vector2D(this.midPoint.getX(), this.minPoint.getY()), new Vector2D(this.maxPoint.getX(), this.midPoint.getY()));
                 topRight.remove(p);
