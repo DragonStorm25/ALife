@@ -1,5 +1,6 @@
 package tests.util;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -43,5 +44,24 @@ public class QuadTreeTests {
             for (int j = 0; j < 3; j++)
                 expectedList.add(new Vector2D(i*10, j*10));
         assertTrue(nearbyList.size() == expectedList.size() && nearbyList.containsAll(expectedList) && expectedList.containsAll(nearbyList));
+    }
+
+    @Test 
+    void particleRemoval() {
+        QuadTree qt = new QuadTree(Vector2D.ZERO(), new Vector2D(128, 128));
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++){
+                qt.insert(new Particle(new Vector2D(10*i, 10*j), 0));
+            }
+        }
+        qt.remove(new Particle(new Vector2D(10, 10), 0));
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++){
+                if (i == 1 && j == 1)
+                    assertFalse(qt.particleAtPoint(new Vector2D(10*i, 10*j)));
+                else
+                    assertTrue(qt.particleAtPoint(new Vector2D(10*i, 10*j)));
+            }
+        }
     }
 }
