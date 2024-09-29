@@ -109,8 +109,8 @@ public class QuadTree {
         if (!inBoundary(newPos))
             return;
 
-        QuadTree particleQuad = this.smallestTreeWithPoint(p.getPosition());
-        QuadTree newPosQuad = this.smallestTreeWithPoint(newPos);
+        QuadTree particleQuad = this.firstEmptyTreeWithPoint(p.getPosition());
+        QuadTree newPosQuad = this.firstEmptyTreeWithPoint(newPos);
 
         if (particleQuad.equals(newPosQuad)) { // No movement to other quad! Easy
             p.setPosition(newPos);
@@ -197,26 +197,26 @@ public class QuadTree {
         return pos.getX() >= minPoint.getX() && pos.getX() <= maxPoint.getX() && pos.getY() >= minPoint.getY() && pos.getY() <= maxPoint.getY();
     }
 
-    private QuadTree smallestTreeWithPoint(Vector2D pos) {
+    private QuadTree firstEmptyTreeWithPoint(Vector2D pos) {
         if (pos.getX() < this.midPoint.getX()) { // Left
             if (pos.getY() < this.midPoint.getY()) { // Top left
                 if (topLeft == null)
                     return this;
-                return topLeft.smallestTreeWithPoint(pos);
+                return topLeft.firstEmptyTreeWithPoint(pos);
             } else { // Bottom left
                 if (bottomLeft == null)
                     return this;
-                return bottomLeft.smallestTreeWithPoint(pos);
+                return bottomLeft.firstEmptyTreeWithPoint(pos);
             }
         } else { // Right
             if (pos.getY() < this.midPoint.getY()) { // Top right
                 if (topRight == null)
                     return this;
-                return topRight.smallestTreeWithPoint(pos);
+                return topRight.firstEmptyTreeWithPoint(pos);
             } else { // Bottom right
                 if (bottomRight == null)
                     return this;
-                return bottomRight.smallestTreeWithPoint(pos);
+                return bottomRight.firstEmptyTreeWithPoint(pos);
             }
         }
     }
