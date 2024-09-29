@@ -42,4 +42,10 @@ public class Vector2D {
     public String toString() {
         return "(" + x + ", " + y + ")";
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Vector2D)) return false;
+        return this.x == ((Vector2D)other).x && this.y == ((Vector2D)other).y;
+    }
 }
