@@ -15,17 +15,21 @@ public class PhysicsEngine {
     private QuadTree particles;
     private double deltaTime;
     private Map<Integer, Vector2D> forces;
+    private Map<Integer, Particle> particlesFromIds;
 
     public PhysicsEngine(double dt) {
         particles = new QuadTree(Vector2D.ZERO(), new Vector2D(128, 128));
         this.deltaTime = dt;
         this.forces = new HashMap<>();
+        this.particlesFromIds = new HashMap<>();
     }
 
     public void doTimeStep() {
         this.forces = new HashMap<>();
         doTimeStep(particles);
-        
+        for (Integer id : particlesFromIds.keySet()) {
+            doParticleTimeStep(particlesFromIds.get(id), forces.get(id));
+        }
     }
 
     private void doTimeStep(QuadTree qt) {
@@ -40,6 +44,7 @@ public class PhysicsEngine {
                 }
             }
             forces.put(p.getId(), sumForce);
+            particlesFromIds.put(p.getId(), p);
         }
         if (qt.topLeft != null) doTimeStep(qt.topLeft);
         if (qt.topRight != null) doTimeStep(qt.topRight);
