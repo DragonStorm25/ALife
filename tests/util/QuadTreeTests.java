@@ -1,7 +1,6 @@
 package tests.util;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,5 +62,17 @@ public class QuadTreeTests {
                     assertTrue(qt.particleAtPoint(new Vector2D(10*i, 10*j)));
             }
         }
+    }
+
+    @Test
+    void particleMove() {
+        QuadTree qt = new QuadTree(Vector2D.ZERO(), new Vector2D(128, 128));
+        Particle p1 = new Particle(new Vector2D(16, 16), 0);
+        Particle p2 = new Particle(new Vector2D(32, 32), 0);
+        qt.insert(p1);
+        qt.insert(p2);
+        qt.move(p2, new Vector2D(100, 100));
+        assertEquals(qt.topLeft.particles.size(), 0);
+        assertEquals(qt.bottomRight.particles.size(), 1);
     }
 }
