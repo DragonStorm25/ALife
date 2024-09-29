@@ -21,6 +21,10 @@ public class QuadTree {
         this(null, Vector2D.ZERO(), Vector2D.ZERO());
     }
 
+    public QuadTree(Vector2D min, Vector2D max){
+        this(null, min, max);
+    }
+
     private QuadTree(QuadTree parent, Vector2D min, Vector2D max){
         particles = new ArrayList<>();
         this.minPoint = min;
