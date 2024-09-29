@@ -48,12 +48,16 @@ public class QuadTreeTests {
     @Test 
     void particleRemoval() {
         QuadTree qt = new QuadTree(Vector2D.ZERO(), new Vector2D(128, 128));
+        Particle removedParticle = null;
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++){
-                qt.insert(new Particle(new Vector2D(10*i, 10*j), 0));
+                Particle p = new Particle(new Vector2D(10*i, 10*j), 0);
+                if (i == 1 && j == 1)
+                    removedParticle = p;
+                qt.insert(p);
             }
         }
-        qt.remove(new Particle(new Vector2D(10, 10), 0));
+        qt.remove(removedParticle);
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++){
                 if (i == 1 && j == 1)
