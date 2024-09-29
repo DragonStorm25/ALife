@@ -2,7 +2,6 @@ package src.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import src.particles.Particle;
@@ -61,6 +60,36 @@ public class QuadTree {
             }
         } else { // No need to split
             this.particles.add(p);
+        }
+    }
+
+    public boolean particleAtPoint(Vector2D point) {
+        if (!inBoundary(point))
+            return false;
+
+        if (particles.stream().map(Particle::getPosition).toList().contains(point))
+            return true;
+ 
+        if (point.getX() < this.midPoint.getX()) { // Left
+            if (point.getY() < this.midPoint.getY()) { // Top left
+                if (topLeft == null)
+                    return false;
+                return topLeft.particleAtPoint(point);
+            } else { // Bottom left
+                if (bottomLeft == null)
+                    return false;
+                return bottomLeft.particleAtPoint(point);
+            }
+        } else { // Right
+            if (point.getY() < this.midPoint.getY()) { // Top right
+                if (topRight == null)
+                    return false;
+                return topRight.particleAtPoint(point);
+            } else { // Bottom right
+                if (bottomRight == null)
+                    return false;
+                return bottomRight.particleAtPoint(point);
+            }
         }
     }
 
