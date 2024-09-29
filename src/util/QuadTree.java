@@ -107,28 +107,13 @@ public class QuadTree {
 
         QuadTree particleQuad = this.smallestTreeWithPoint(p.getPosition());
         QuadTree newPosQuad = this.smallestTreeWithPoint(newPos);
-        
-        // Now to check which quad it's in
-        if (newPos.getX() < this.midPoint.getX()) { // Left
-            if (newPos.getY() < this.midPoint.getY()) { // Top left
-                if (topLeft == null)
-                    topLeft = new QuadTree(this, this.minPoint.clone(), this.midPoint.clone());
-                topLeft.remove(p);
-            } else { // Bottom left
-                if (bottomLeft == null)
-                    bottomLeft = new QuadTree(this, new Vector2D(this.minPoint.getX(), this.midPoint.getY()), new Vector2D(this.midPoint.getX(), this.maxPoint.getY()));
-                bottomLeft.remove(p);
-            }
-        } else { // Right
-            if (newPos.getY() < this.midPoint.getY()) { // Top right
-                if (topRight == null)
-                    topRight = new QuadTree(this, new Vector2D(this.midPoint.getX(), this.minPoint.getY()), new Vector2D(this.maxPoint.getX(), this.midPoint.getY()));
-                topRight.remove(p);
-            } else { // Bottom right
-                if (bottomRight == null)
-                    bottomRight = new QuadTree(this, this.midPoint.clone(), this.maxPoint.clone());
-                bottomRight.remove(p);
-            }
+
+        if (particleQuad.equals(newPosQuad)) { // No movement to other quad! Easy
+            p.setPosition(newPos);
+        } else { // Need to move particle to other quad
+            this.remove(p);
+            p.setPosition(newPos);
+            particleQuad.insert(p);
         }
     }
 
@@ -213,21 +198,21 @@ public class QuadTree {
             if (pos.getY() < this.midPoint.getY()) { // Top left
                 if (topLeft == null)
                     return this;
-                return topLeft;
+                return topLeft.smallestTreeWithPoint(pos);
             } else { // Bottom left
                 if (bottomLeft == null)
                     return this;
-                return bottomLeft;
+                return bottomLeft.smallestTreeWithPoint(pos);
             }
         } else { // Right
             if (pos.getY() < this.midPoint.getY()) { // Top right
                 if (topRight == null)
                     return this;
-                return topRight;
+                return topRight.smallestTreeWithPoint(pos);
             } else { // Bottom right
                 if (bottomRight == null)
                     return this;
-                return bottomRight;
+                return bottomRight.smallestTreeWithPoint(pos);
             }
         }
     }
