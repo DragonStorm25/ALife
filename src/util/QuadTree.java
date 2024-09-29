@@ -63,6 +63,37 @@ public class QuadTree {
         }
     }
 
+    public void remove(Particle p) {
+        if (!inBoundary(p.getPosition()))
+            return;
+
+        if (this.particles.contains(p))
+            this.particles.remove(p);
+
+        // Now to check which quad it's in
+        if (p.getPosition().getX() < this.midPoint.getX()) { // Left
+            if (p.getPosition().getY() < this.midPoint.getY()) { // Top left
+                if (topLeft == null)
+                    return;
+                topLeft.remove(p);
+            } else { // Bottom left
+                if (bottomLeft == null)
+                    bottomLeft = new QuadTree(new Vector2D(this.minPoint.getX(), this.midPoint.getY()), new Vector2D(this.midPoint.getX(), this.maxPoint.getY()));
+                bottomLeft.remove(p);
+            }
+        } else { // Right
+            if (p.getPosition().getY() < this.midPoint.getY()) { // Top right
+                if (topRight == null)
+                    topRight = new QuadTree(new Vector2D(this.midPoint.getX(), this.minPoint.getY()), new Vector2D(this.maxPoint.getX(), this.midPoint.getY()));
+                topRight.remove(p);
+            } else { // Bottom right
+                if (bottomRight == null)
+                    bottomRight = new QuadTree(this.midPoint.clone(), this.maxPoint.clone());
+                bottomRight.remove(p);
+            }
+        }
+    }
+
     public boolean particleAtPoint(Vector2D point) {
         if (!inBoundary(point))
             return false;
