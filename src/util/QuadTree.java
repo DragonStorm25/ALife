@@ -34,7 +34,7 @@ public class QuadTree {
     }
 
     public void insert(Particle p) {
-        if (particles.size() == maxParticlesBeforeSplit) { // Needs to be split
+        if (this.isFull()) { // Needs to be split
             if (!inBoundary(p.getPosition()))
                 return;
 
@@ -219,6 +219,10 @@ public class QuadTree {
                 return bottomRight.firstEmptyTreeWithPoint(pos);
             }
         }
+    }
+
+    public boolean isFull() {
+        return this.particles.size() == this.maxParticlesBeforeSplit;
     }
 
     public String toString() {
