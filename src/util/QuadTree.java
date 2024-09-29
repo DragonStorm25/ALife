@@ -1,5 +1,6 @@
 package src.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import src.main.*;
 
@@ -57,6 +58,48 @@ public class QuadTree {
         } else { // No need to split
             this.particles.add(p);
         }
+    }
+
+    public List<Particle> getParticlesWithinDistance(Vector2D point, double distance) {
+        List<Particle> possibleParticles = this.rectQuery(point.plus(new Vector2D(-distance, -distance)), point.plus(new Vector2D(distance, distance)));
+        List<Particle> actualParticles = new ArrayList<>();
+        for (Particle p : possibleParticles) {
+            final double px = p.getPosition().getX(), py = p.getPosition().getY();
+            final double pox = p.getPosition().getX(), poy = p.getPosition().getY();
+            if ((px - pox) * (px - pox) + (py - poy) * (py - poy) < distance*distance)
+                actualParticles.add(p);
+        }
+        return actualParticles;
+    }
+
+    public List<Particle> rectQuery(Vector2D min, Vector2D max) {
+        boolean topLeft = true, topRight = true, bottomLeft = true, bottomRight = true;
+        final List<Particle> particles = new ArrayList<>();
+        if (min.getX() >= midPoint.getX()) { // Only have to search right half
+            topLeft = false;
+            bottomLeft = false;
+        } 
+        if (max.getX() < midPoint.getX()) { // Only have to search left half
+            topRight = false;
+            bottomRight = false;
+        }
+        if (min.getY() < midPoint.getY()) { // Only have to search top half
+            topLeft = false;
+            topRight = false;
+        } 
+        if (max.getY() >= midPoint.getY()) { // Only have to search bottom half
+            bottomLeft = false;
+            bottomRight = false;
+        }
+
+        if (topLeft) particles.addAll(this.topLeft.rectQuery(min, max));
+        if (topRight) particles.addAll(this.topRight.rectQuery(min, max));
+        if (bottomLeft) particles.addAll(this.bottomLeft.rectQuery(min, max));
+        if (bottomRight) particles.addAll(this.bottomRight.rectQuery(min, max));
+
+        particles.addAll(this.particles);
+
+        return particles;
     }
 
     private boolean inBoundary(Vector2D pos) {
