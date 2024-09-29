@@ -96,10 +96,10 @@ public class QuadTree {
             bottomRight = false;
         }
 
-        if (topLeft) particles.addAll(this.topLeft.rectQuery(min, max));
-        if (topRight) particles.addAll(this.topRight.rectQuery(min, max));
-        if (bottomLeft) particles.addAll(this.bottomLeft.rectQuery(min, max));
-        if (bottomRight) particles.addAll(this.bottomRight.rectQuery(min, max));
+        if (topLeft && this.topLeft != null) particles.addAll(this.topLeft.rectQuery(min, max));
+        if (topRight && this.topRight != null) particles.addAll(this.topRight.rectQuery(min, max));
+        if (bottomLeft && this.bottomLeft != null) particles.addAll(this.bottomLeft.rectQuery(min, max));
+        if (bottomRight && this.bottomRight != null) particles.addAll(this.bottomRight.rectQuery(min, max));
 
         particles.addAll(this.particles);
 
