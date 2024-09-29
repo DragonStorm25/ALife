@@ -19,4 +19,9 @@ public class Vector2D {
     public double getY() {
         return y;
     }
+
+    public Vector2D normalized() {
+        final double mag = this.getMagnitude();
+        return new Vector2D(x/mag, y/mag);
+    }
 }
