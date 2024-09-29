@@ -31,4 +31,8 @@ public class Particle {
     public int getMass() {
         return this.mass;
     }
+
+    public String toString() {
+        return "Pos: " + this.pos + ", Vel: " + this.vel + ", Mass: " + this.mass;
+    }
 }
