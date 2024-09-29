@@ -12,10 +12,10 @@ import src.util.Vector2D;
 public class PhysicsEngine {
     public static final double INTERACTION_DISTANCE = 10;
 
-    private QuadTree particles;
+    public QuadTree particles;
     private double deltaTime;
     private Map<Integer, Vector2D> particleIdToForce;
-    private Map<Integer, Particle> idToParticle;
+    public Map<Integer, Particle> idToParticle;
 
     public PhysicsEngine(double dt) {
         particles = new QuadTree(Vector2D.ZERO(), new Vector2D(128, 128));
