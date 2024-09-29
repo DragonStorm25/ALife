@@ -87,11 +87,11 @@ public class QuadTree {
             topRight = false;
             bottomRight = false;
         }
-        if (min.getY() < midPoint.getY()) { // Only have to search top half
+        if (max.getY() < midPoint.getY()) { // Only have to search top half
             bottomLeft = false;
             bottomRight = false;
         } 
-        if (max.getY() >= midPoint.getY()) { // Only have to search bottom half
+        if (min.getY() >= midPoint.getY()) { // Only have to search bottom half
             topLeft = false;
             topRight = false;
         }
