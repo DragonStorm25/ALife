@@ -25,7 +25,7 @@ public class PhysicsEngine {
     }
 
     public void doTimeStep() {
-        this.particleIdToForce = new HashMap<>();
+        this.particleIdToForce.clear();
         doTimeStep(particles);
         for (Integer id : idToParticle.keySet()) {
             doParticleTimeStep(idToParticle.get(id), particleIdToForce.get(id));
