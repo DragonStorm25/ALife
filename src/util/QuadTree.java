@@ -102,6 +102,7 @@ public class QuadTree {
         if (!inBoundary(newPos))
             return;
 
+        
         // Now to check which quad it's in
         if (newPos.getX() < this.midPoint.getX()) { // Left
             if (newPos.getY() < this.midPoint.getY()) { // Top left
@@ -200,6 +201,30 @@ public class QuadTree {
 
     private boolean inBoundary(Vector2D pos) {
         return pos.getX() >= minPoint.getX() && pos.getX() <= maxPoint.getX() && pos.getY() >= minPoint.getY() && pos.getY() <= maxPoint.getY();
+    }
+
+    private QuadTree smallestTreeWithPoint(Vector2D pos) {
+        if (pos.getX() < this.midPoint.getX()) { // Left
+            if (pos.getY() < this.midPoint.getY()) { // Top left
+                if (topLeft == null)
+                    return this;
+                return topLeft;
+            } else { // Bottom left
+                if (bottomLeft == null)
+                    return this;
+                return bottomLeft;
+            }
+        } else { // Right
+            if (pos.getY() < this.midPoint.getY()) { // Top right
+                if (topRight == null)
+                    return this;
+                return topRight;
+            } else { // Bottom right
+                if (bottomRight == null)
+                    return this;
+                return bottomRight;
+            }
+        }
     }
 
     public String toString() {
