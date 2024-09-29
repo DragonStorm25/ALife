@@ -1,1 +1,1 @@
-# ALife3D
+# ALife
