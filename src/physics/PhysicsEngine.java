@@ -3,7 +3,6 @@ package src.physics;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.main.*;
 import src.particles.Particle;
 
 public class PhysicsEngine {

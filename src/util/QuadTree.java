@@ -2,7 +2,6 @@ package src.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import src.main.*;
 import src.particles.Particle;
 
 public class QuadTree {
