@@ -202,20 +202,28 @@ public class QuadTree {
             if (pos.getY() < this.midPoint.getY()) { // Top left
                 if (topLeft == null)
                     return this;
+                if (!topLeft.isFull())
+                    return topLeft;
                 return topLeft.firstEmptyTreeWithPoint(pos);
             } else { // Bottom left
                 if (bottomLeft == null)
                     return this;
+                if (!bottomLeft.isFull())
+                    return bottomLeft;
                 return bottomLeft.firstEmptyTreeWithPoint(pos);
             }
         } else { // Right
             if (pos.getY() < this.midPoint.getY()) { // Top right
                 if (topRight == null)
                     return this;
+                if (!topRight.isFull())
+                    return topRight;
                 return topRight.firstEmptyTreeWithPoint(pos);
             } else { // Bottom right
                 if (bottomRight == null)
                     return this;
+                if (!bottomRight.isFull())
+                    return bottomRight;
                 return bottomRight.firstEmptyTreeWithPoint(pos);
             }
         }
