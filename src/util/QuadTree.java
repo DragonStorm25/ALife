@@ -31,7 +31,7 @@ public class QuadTree {
             if (!inBoundary(p.getPosition()))
                 return;
 
-            final Vector2D size = minPoint.plus(maxPoint.scale(-1));
+            final Vector2D size = maxPoint.plus(minPoint.scale(-1));
             if (size.getX() < MIN_SIZE || size.getY() < MIN_SIZE) { // Cannot split, just add it (regardless of max particles)
                 this.particles.add(p);
                 return;
