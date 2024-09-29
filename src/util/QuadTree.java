@@ -117,7 +117,7 @@ public class QuadTree {
         } else { // Need to move particle to other quad
             this.remove(p);
             p.setPosition(newPos);
-            particleQuad.insert(p);
+            newPosQuad.insert(p);
         }
     }
 
