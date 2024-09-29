@@ -2,6 +2,9 @@ package src.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import src.particles.Particle;
 
 public class QuadTree {
@@ -17,6 +20,7 @@ public class QuadTree {
     }
 
     public QuadTree(Vector2D min, Vector2D max){
+        particles = new ArrayList<>();
         this.minPoint = min;
         this.maxPoint = max;
         this.midPoint = min.plus(max).scale(0.5);
@@ -104,5 +108,20 @@ public class QuadTree {
 
     private boolean inBoundary(Vector2D pos) {
         return pos.getX() >= minPoint.getX() && pos.getX() <= maxPoint.getX() && pos.getY() >= minPoint.getY() && pos.getY() <= maxPoint.getY();
+    }
+
+    public String toString() {
+        return this.toString(0);
+    }
+
+    public String toString(int indents) {
+        String indentString = "\t".repeat(indents);
+
+        String s = indentString + "Particles: " + particles.stream().map(Particle::toString).collect(Collectors.joining(", ")) + "\n";
+        s += indentString + "TopLeft: \n" + (topLeft == null ? "null" : topLeft.toString(indents + 1)) + "\n";
+        s += indentString + "TopRight: \n" + (topRight == null ? "null" : topRight.toString(indents + 1)) + "\n";
+        s += indentString + "BottomLeft: \n" + (bottomLeft == null ? "null" : bottomLeft.toString(indents + 1)) + "\n";
+        s += indentString + "BottomRight: \n" + (bottomLeft == null ? "null" : bottomLeft.toString(indents + 1)) + "\n";
+        return s;
     }
 }
