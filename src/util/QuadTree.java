@@ -42,21 +42,21 @@ public class QuadTree {
                 if (p.getPosition().getY() < this.midPoint.getY()) { // Top left
                     if (topLeft == null)
                         topLeft = new QuadTree(this.minPoint.clone(), this.midPoint.clone());
-                    topLeft.particles.add(p);
+                    topLeft.insert(p);
                 } else { // Bottom left
                     if (bottomLeft == null)
                         bottomLeft = new QuadTree(new Vector2D(this.minPoint.getX(), this.midPoint.getY()), new Vector2D(this.midPoint.getX(), this.maxPoint.getY()));
-                    bottomLeft.particles.add(p);
+                    bottomLeft.insert(p);
                 }
             } else { // Right
                 if (p.getPosition().getY() < this.midPoint.getY()) { // Top right
                     if (topRight == null)
                         topRight = new QuadTree(new Vector2D(this.midPoint.getX(), this.minPoint.getY()), new Vector2D(this.maxPoint.getX(), this.midPoint.getY()));
-                    topRight.particles.add(p);
+                    topRight.insert(p);
                 } else { // Bottom right
                     if (bottomRight == null)
                         bottomRight = new QuadTree(this.midPoint.clone(), this.maxPoint.clone());
-                    bottomRight.particles.add(p);
+                    bottomRight.insert(p);
                 }
             }
         } else { // No need to split
