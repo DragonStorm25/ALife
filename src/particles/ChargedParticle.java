@@ -28,4 +28,8 @@ public class ChargedParticle extends Particle {
         final double mag = (CHARGE_CONSTANT * c1.charge * c2.charge) / (distance * distance);
         return vectorBetween.normalized().scale(mag);
     }
+
+    public String toString() {
+        return super.toString() + ", Charge: " + this.charge + " (Range: [" + minRange + "," + maxRange + "])";
+    }
 }
