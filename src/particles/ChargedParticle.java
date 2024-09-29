@@ -1,4 +1,4 @@
-package src.main;
+package src.particles;
 
 import src.util.Vector2D;
 
