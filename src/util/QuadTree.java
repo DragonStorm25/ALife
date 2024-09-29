@@ -118,10 +118,10 @@ public class QuadTree {
         String indentString = "\t".repeat(indents);
 
         String s = indentString + "Particles: " + particles.stream().map(Particle::toString).collect(Collectors.joining(", ")) + "\n";
-        s += indentString + "TopLeft: \n" + (topLeft == null ? "null" : topLeft.toString(indents + 1)) + "\n";
-        s += indentString + "TopRight: \n" + (topRight == null ? "null" : topRight.toString(indents + 1)) + "\n";
-        s += indentString + "BottomLeft: \n" + (bottomLeft == null ? "null" : bottomLeft.toString(indents + 1)) + "\n";
-        s += indentString + "BottomRight: \n" + (bottomLeft == null ? "null" : bottomLeft.toString(indents + 1)) + "\n";
+        s += indentString + "TopLeft: " + (topLeft == null ? "null" : ("\n" + topLeft.toString(indents + 1))) + "\n";
+        s += indentString + "TopRight: " + (topRight == null ? "null" : ("\n" + topRight.toString(indents + 1))) + "\n";
+        s += indentString + "BottomLeft: " + (bottomLeft == null ? "null" : ("\n" + bottomLeft.toString(indents + 1))) + "\n";
+        s += indentString + "BottomRight: " + (bottomLeft == null ? "null" : ("\n" + bottomLeft.toString(indents + 1))) + "\n";
         return s;
     }
 }
