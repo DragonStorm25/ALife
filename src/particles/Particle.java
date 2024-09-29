@@ -24,6 +24,10 @@ public class Particle {
         return this.pos.clone();
     }
 
+    public void setPosition(Vector2D pos) {
+        this.pos = pos;
+    }
+
     public Vector2D getVelocity() {
         return this.vel.clone();
     }
