@@ -22,6 +22,14 @@ public class Vector2D {
 
     public Vector2D normalized() {
         final double mag = this.getMagnitude();
-        return new Vector2D(x/mag, y/mag);
+        return new Vector2D(this.x/mag, this.y/mag);
+    }
+
+    public Vector2D plus(Vector2D other) {
+        return new Vector2D(this.x + other.x, this.y + other.y);
+    }
+
+    public Vector2D scale(double scalar) {
+        return new Vector2D(scalar * this.x, scalar * this.y);
     }
 }
