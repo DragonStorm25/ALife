@@ -8,6 +8,7 @@ import java.util.TimerTask;
 
 import src.particles.ChargedParticle;
 import src.particles.Particle;
+import src.util.Profiler;
 import src.util.QuadTree;
 import src.util.Vector2D;
 
@@ -30,10 +31,14 @@ public class PhysicsEngine {
 
     public void doTimeStep() {
         this.particleIdToForce.clear();
+        Profiler.SINGLETON.startTimer("ForceCalculation");
         doTimeStep(particles);
+        Profiler.SINGLETON.stopTimer("ForceCalculation");
+        Profiler.SINGLETON.startTimer("ApplyForces");
         for (Integer id : idToParticle.keySet()) {
             doParticleTimeStep(idToParticle.get(id), particleIdToForce.get(id));
         }
+        Profiler.SINGLETON.stopTimer("ApplyForces");
     }
 
     private void doTimeStep(QuadTree qt) {
