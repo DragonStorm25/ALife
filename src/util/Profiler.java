@@ -6,17 +6,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Profiler {
+    public static final Profiler SINGLETON = new Profiler();
+
     private final Map<String, Long> startTimes;
     private final Map<String, Long> durations;
     private Map<String, Long> lastDurations;
     private TimerTask profilerTask = null;
     private Timer profilerTimer = null;
 
-    public Profiler() {
+    private Profiler() {
         startTimes = new HashMap<>();
         durations = new HashMap<>();
         lastDurations = new HashMap<>();
-        
     }
 
     public void startTimer(String s) {
