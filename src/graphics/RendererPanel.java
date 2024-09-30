@@ -56,6 +56,7 @@ public class RendererPanel extends JPanel implements MouseWheelListener, MouseLi
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.transform(at);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         g2d.setColor(Color.red);
         for (Particle p : pe.idToParticle.values()) {
