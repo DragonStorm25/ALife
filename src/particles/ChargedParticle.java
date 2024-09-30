@@ -20,6 +20,7 @@ public class ChargedParticle extends Particle {
     public ChargedParticle(Vector2D pos, Vector2D vel, int mass, int charge) {
         super(pos, vel, mass);
         this.charge = charge;
+        this.interactionDistance = MAX_RANGE * Math.sqrt(charge);
     }
 
     public static Vector2D getChargeForce(ChargedParticle c1, ChargedParticle c2) {

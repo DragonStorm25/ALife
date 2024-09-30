@@ -9,7 +9,7 @@ public class Particle {
     private Vector2D pos, vel;
     private int mass;
     private final int id;
-    private double interactionDistance = DEFAULT_INTERACTION_DISTANCE;
+    protected double interactionDistance = DEFAULT_INTERACTION_DISTANCE;
 
     public Particle(int mass) {
         this(Vector2D.ZERO(), mass);
