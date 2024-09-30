@@ -28,7 +28,11 @@ public class Profiler {
 
     public void stopTimer(String s) {
         if (startTimes.containsKey(s)) {
-            durations.put(s, System.nanoTime() - startTimes.get(s));
+            if (durations.containsKey(s)) 
+                durations.put(s, durations.get(s) + System.nanoTime() - startTimes.get(s));
+            else
+                durations.put(s, System.nanoTime() - startTimes.get(s));
+            startTimes.remove(s);
         }
     }
 
@@ -48,9 +52,11 @@ public class Profiler {
             @Override
             public void run() {
                 reset();
-                if (print)
+                if (print) {
                     for (String s : getProfile().keySet())
                         System.out.println(s + ": " + getProfile().get(s)/1e6);
+                    System.out.println("------------");
+                }
             }
         };
 
