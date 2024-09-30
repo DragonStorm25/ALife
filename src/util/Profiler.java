@@ -50,7 +50,7 @@ public class Profiler {
                 reset();
                 if (print)
                     for (String s : getProfile().keySet())
-                        System.out.println(s + " " + getProfile().get(s)/1e6);
+                        System.out.println(s + ": " + getProfile().get(s)/1e6);
             }
         };
 
