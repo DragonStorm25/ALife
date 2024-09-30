@@ -46,7 +46,7 @@ public class QuadTree {
     }
 
     public void makeBottomRight() {
-        topRight = new QuadTree(this, new Vector2D(this.midPoint.getX(), this.minPoint.getY()), new Vector2D(this.maxPoint.getX(), this.midPoint.getY()));
+        bottomRight = new QuadTree(this, this.midPoint.clone(), this.maxPoint.clone());
     }
 
     public void insert(Particle p) {
@@ -222,7 +222,7 @@ public class QuadTree {
             if (pos.getY() < this.midPoint.getY()) { // Top left
                 if (topLeft == null)
                     if (this.isFull()) {
-                        topLeft = new QuadTree(this, this.minPoint.clone(), this.midPoint.clone());
+                        this.makeTopLeft();
                     } else
                         return this;
                 if (!topLeft.isFull())
@@ -230,7 +230,10 @@ public class QuadTree {
                 return topLeft.firstEmptyTreeWithPoint(pos);
             } else { // Bottom left
                 if (bottomLeft == null)
-                    return this;
+                    if (this.isFull()) {
+                        this.makeBottomLeft();
+                    } else
+                        return this;
                 if (!bottomLeft.isFull())
                     return bottomLeft;
                 return bottomLeft.firstEmptyTreeWithPoint(pos);
@@ -238,13 +241,19 @@ public class QuadTree {
         } else { // Right
             if (pos.getY() < this.midPoint.getY()) { // Top right
                 if (topRight == null)
-                    return this;
+                    if (this.isFull()) {
+                        this.makeTopRight();
+                    } else
+                        return this;
                 if (!topRight.isFull())
                     return topRight;
                 return topRight.firstEmptyTreeWithPoint(pos);
             } else { // Bottom right
                 if (bottomRight == null)
-                    return this;
+                    if (this.isFull()) {
+                        this.makeBottomRight();
+                    } else 
+                        return this;
                 if (!bottomRight.isFull())
                     return bottomRight;
                 return bottomRight.firstEmptyTreeWithPoint(pos);
