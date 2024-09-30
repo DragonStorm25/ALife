@@ -91,7 +91,6 @@ public class PhysicsEngine {
             @Override
             public void run() {
                 doTimeStep();
-                System.out.println(particles);
             }
         };
 
