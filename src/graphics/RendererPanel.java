@@ -11,6 +11,8 @@ import src.physics.PhysicsEngine;
 public class RendererPanel extends JPanel implements MouseWheelListener {
     private PhysicsEngine pe;
     private double zoomFactor = 1;
+    private double prevZoomFactor = 1;
+    private double xOffset, yOffset;
 
     public RendererPanel(PhysicsEngine pe) {
         this.pe = pe;
@@ -25,7 +27,19 @@ public class RendererPanel extends JPanel implements MouseWheelListener {
 
     public void render(Graphics g) {
         AffineTransform at = new AffineTransform();
+
+        double xRel = MouseInfo.getPointerInfo().getLocation().getX() - getLocationOnScreen().getX();
+        double yRel = MouseInfo.getPointerInfo().getLocation().getY() - getLocationOnScreen().getY();
+
+        double zoomDiv = zoomFactor / prevZoomFactor;
+
+        xOffset = (zoomDiv) * (xOffset) + (1 - zoomDiv) * xRel;
+        yOffset = (zoomDiv) * (yOffset) + (1 - zoomDiv) * yRel;
+
+        at.translate(xOffset, yOffset);
         at.scale(zoomFactor, zoomFactor);
+
+        prevZoomFactor = zoomFactor;
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.transform(at);
