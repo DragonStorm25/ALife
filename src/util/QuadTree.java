@@ -12,7 +12,7 @@ public class QuadTree {
 
     public Vector2D minPoint, maxPoint, midPoint;
     public List<Particle> particles;
-    public int maxParticlesBeforeSplit = 1;
+    public int maxParticlesBeforeSplit = 10;
     public QuadTree parent;
     public QuadTree topLeft, topRight, bottomLeft, bottomRight;
     private final int id;
