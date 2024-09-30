@@ -4,7 +4,7 @@ import src.util.Vector2D;
 
 public class ChargedParticle extends Particle {
     public static final double CHARGE_CONSTANT = 1;
-    public static final double MAX_RANGE = 5;
+    public static final double MAX_RANGE = 100;
     public static final double MIN_RANGE = 0.1;
 
     public int charge = 0;
