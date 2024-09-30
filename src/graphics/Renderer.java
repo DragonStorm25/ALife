@@ -27,7 +27,7 @@ public class Renderer {
             }
         };
         this.frame.add(this.panel);
-        this.frame.setSize(800, 800);
+        this.frame.setSize(1024, 1024);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.physicsEngine = pe;
     }
