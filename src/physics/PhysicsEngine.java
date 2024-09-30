@@ -12,7 +12,7 @@ import src.util.QuadTree;
 import src.util.Vector2D;
 
 public class PhysicsEngine {
-    public static final double INTERACTION_DISTANCE = 10;
+    public static final double INTERACTION_DISTANCE = 100;
 
     private QuadTree particles;
     private double deltaTime;
@@ -43,7 +43,7 @@ public class PhysicsEngine {
             if (p instanceof ChargedParticle) {
                 final List<Particle> nearbyParticles = particles.getParticlesWithinDistance(p.getPosition(), INTERACTION_DISTANCE);
                 for (int j = 0; j < nearbyParticles.size(); j++) {
-                    if (nearbyParticles.get(i) instanceof ChargedParticle)
+                    if (nearbyParticles.get(j) instanceof ChargedParticle)
                         sumForce = sumForce.plus(ChargedParticle.getChargeForce(((ChargedParticle)p), ((ChargedParticle)nearbyParticles.get(j))));
                 }
             }
