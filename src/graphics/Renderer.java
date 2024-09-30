@@ -52,7 +52,7 @@ public class Renderer {
 
             @Override
             public void run() {
-                panel.revalidate();
+                panel.repaint();
             }
         };
 
