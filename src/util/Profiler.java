@@ -13,6 +13,7 @@ public class Profiler {
     private Map<String, Long> lastDurations;
     private TimerTask profilerTask = null;
     private Timer profilerTimer = null;
+    public final int tickInSeconds = 1;
     public boolean print = false;
     public boolean running = false;
 
@@ -68,7 +69,7 @@ public class Profiler {
         };
 
         profilerTimer = new Timer("RenderTimer");//create a new Timer
-        profilerTimer.scheduleAtFixedRate(profilerTask, 0, 1000);
+        profilerTimer.scheduleAtFixedRate(profilerTask, 0, tickInSeconds * 1000);
     }
 
     public Map<String, Long> getProfile() {
