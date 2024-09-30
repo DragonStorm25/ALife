@@ -3,11 +3,13 @@ package src.particles;
 import src.util.Vector2D;
 
 public class Particle {
+    public static final double DEFAULT_INTERACTION_DISTANCE = 50;
     private static int ID_COUNTER = 0;
 
     private Vector2D pos, vel;
     private int mass;
     private final int id;
+    private double interactionDistance = DEFAULT_INTERACTION_DISTANCE;
 
     public Particle(int mass) {
         this(Vector2D.ZERO(), mass);
@@ -46,6 +48,10 @@ public class Particle {
 
     public int getId() {
         return this.id;
+    }
+
+    public double getInteractionDistance() {
+        return this.interactionDistance;
     }
 
     public String toString() {

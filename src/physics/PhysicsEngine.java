@@ -13,7 +13,6 @@ import src.util.QuadTree;
 import src.util.Vector2D;
 
 public class PhysicsEngine {
-    public static final double INTERACTION_DISTANCE = 100;
 
     private QuadTree particles;
     private double deltaTime;
@@ -31,9 +30,7 @@ public class PhysicsEngine {
 
     public void doTimeStep() {
         this.particleIdToForce.clear();
-        Profiler.SINGLETON.startTimer("AllForceCalculation");
         doTimeStep(particles);
-        Profiler.SINGLETON.stopTimer("AllForceCalculation");
         Profiler.SINGLETON.startTimer("ApplyForces");
         for (Integer id : idToParticle.keySet()) {
             doParticleTimeStep(idToParticle.get(id), particleIdToForce.get(id));
@@ -47,7 +44,7 @@ public class PhysicsEngine {
             Particle p = qt.particles.get(i);
             Vector2D sumForce = Vector2D.ZERO();
             if (p instanceof ChargedParticle) {
-                final List<Particle> nearbyParticles = particles.getParticlesWithinDistance(p.getPosition(), INTERACTION_DISTANCE);
+                final List<Particle> nearbyParticles = particles.getParticlesWithinDistance(p.getPosition(), p.getInteractionDistance());
                 for (int j = 0; j < nearbyParticles.size(); j++) {
                     if (nearbyParticles.get(j) instanceof ChargedParticle)
                         sumForce = sumForce.plus(ChargedParticle.getChargeForce(((ChargedParticle)p), ((ChargedParticle)nearbyParticles.get(j))));
