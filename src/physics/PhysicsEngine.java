@@ -3,6 +3,8 @@ package src.physics;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import src.particles.ChargedParticle;
 import src.particles.Particle;
@@ -16,6 +18,8 @@ public class PhysicsEngine {
     private double deltaTime;
     private Map<Integer, Vector2D> particleIdToForce;
     public Map<Integer, Particle> idToParticle;
+    private TimerTask physicsTask = null;
+    private Timer physicsTimer = null;
 
     public PhysicsEngine(double dt) {
         particles = new QuadTree(Vector2D.ZERO(), new Vector2D(128, 128));
@@ -76,5 +80,22 @@ public class PhysicsEngine {
         
         p.setPosition(newPos);
         p.setVelocity(newVel);
+    }
+
+    public void startEngine() {
+        if (physicsTimer != null)
+            physicsTimer.cancel();
+
+        physicsTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                doTimeStep();
+                System.out.println(particles);
+            }
+        };
+
+        physicsTimer = new Timer("PhysicsTimer");//create a new Timer
+        physicsTimer.scheduleAtFixedRate(physicsTask, 0, (int) (deltaTime * 1000));
     }
 }
