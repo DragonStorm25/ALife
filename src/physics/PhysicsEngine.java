@@ -31,9 +31,9 @@ public class PhysicsEngine {
 
     public void doTimeStep() {
         this.particleIdToForce.clear();
-        Profiler.SINGLETON.startTimer("ForceCalculation");
+        Profiler.SINGLETON.startTimer("AllForceCalculation");
         doTimeStep(particles);
-        Profiler.SINGLETON.stopTimer("ForceCalculation");
+        Profiler.SINGLETON.stopTimer("AllForceCalculation");
         Profiler.SINGLETON.startTimer("ApplyForces");
         for (Integer id : idToParticle.keySet()) {
             doParticleTimeStep(idToParticle.get(id), particleIdToForce.get(id));
@@ -42,6 +42,7 @@ public class PhysicsEngine {
     }
 
     private void doTimeStep(QuadTree qt) {
+        Profiler.SINGLETON.startTimer("ForceCalculation");
         for (int i = 0; i < qt.particles.size(); i++) {
             Particle p = qt.particles.get(i);
             Vector2D sumForce = Vector2D.ZERO();
@@ -54,6 +55,7 @@ public class PhysicsEngine {
             }
             particleIdToForce.put(p.getId(), sumForce);
         }
+        Profiler.SINGLETON.stopTimer("ForceCalculation");
         if (qt.topLeft != null) doTimeStep(qt.topLeft);
         if (qt.topRight != null) doTimeStep(qt.topRight);
         if (qt.bottomLeft != null) doTimeStep(qt.bottomLeft);
@@ -99,7 +101,7 @@ public class PhysicsEngine {
         };
 
         physicsTimer = new Timer("PhysicsTimer");//create a new Timer
-        physicsTimer.scheduleAtFixedRate(physicsTask, 0, (int) (deltaTime * 1000));
+        physicsTimer.scheduleAtFixedRate(physicsTask, 0, (int) (1000));
     }
 
     public void insert(Particle p) {

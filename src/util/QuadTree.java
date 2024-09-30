@@ -152,7 +152,10 @@ public class QuadTree {
     }
 
     public List<Particle> getParticlesWithinDistance(Vector2D point, double distance) {
+        Profiler.SINGLETON.startTimer("PossibleParticleFinding");
         List<Particle> possibleParticles = this.rectQuery(point.plus(new Vector2D(-distance, -distance)), point.plus(new Vector2D(distance, distance)));
+        Profiler.SINGLETON.stopTimer("PossibleParticleFinding");
+        Profiler.SINGLETON.startTimer("ActualParticleFinding");
         List<Particle> actualParticles = new ArrayList<>();
         for (Particle p : possibleParticles) {
             final double px = p.getPosition().getX(), py = p.getPosition().getY();
@@ -160,6 +163,7 @@ public class QuadTree {
             if ((px - pox) * (px - pox) + (py - poy) * (py - poy) < distance*distance)
                 actualParticles.add(p);
         }
+        Profiler.SINGLETON.stopTimer("ActualParticleFinding");
         return actualParticles;
     }
 
