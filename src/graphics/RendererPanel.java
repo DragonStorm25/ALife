@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import src.particles.Particle;
 import src.physics.PhysicsEngine;
+import src.util.QuadTree;
 
 public class RendererPanel extends JPanel implements MouseWheelListener, MouseListener, MouseMotionListener  {
     private PhysicsEngine pe;
@@ -16,6 +17,7 @@ public class RendererPanel extends JPanel implements MouseWheelListener, MouseLi
     private double xOffset, yOffset;
     private double xDiff, yDiff;
     private boolean mousePressed = false;
+    private boolean renderQuadTree = true;
 
     public RendererPanel(PhysicsEngine pe) {
         this.pe = pe;
@@ -58,10 +60,22 @@ public class RendererPanel extends JPanel implements MouseWheelListener, MouseLi
         g2d.transform(at);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        g2d.setColor(Color.black);
+        if (this.renderQuadTree)
+            this.renderQuadTree(g2d, pe.particles);
+
         g2d.setColor(Color.red);
         for (Particle p : pe.idToParticle.values()) {
             g2d.fillOval((int)p.getPosition().getX(), (int)p.getPosition().getY(), p.getMass(), p.getMass());
         }
+    }
+
+    public void renderQuadTree(Graphics g, QuadTree qt) {
+        g.drawRect((int)qt.minPoint.getX(), (int)qt.minPoint.getY(), (int)(qt.maxPoint.getX() - qt.minPoint.getX()), (int)(qt.maxPoint.getY() - qt.minPoint.getY()));
+        if (qt.topLeft != null) this.renderQuadTree(g, qt.topLeft);
+        if (qt.topRight != null) this.renderQuadTree(g, qt.topRight);
+        if (qt.bottomLeft != null) this.renderQuadTree(g, qt.bottomLeft);
+        if (qt.bottomRight != null) this.renderQuadTree(g, qt.bottomRight);
     }
 
     @Override

@@ -14,7 +14,7 @@ import src.util.Vector2D;
 
 public class PhysicsEngine {
 
-    private QuadTree particles;
+    public QuadTree particles;
     private double deltaTime;
     private Map<Integer, Vector2D> particleIdToForce;
     public Map<Integer, Particle> idToParticle;
