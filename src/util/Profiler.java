@@ -14,12 +14,12 @@ public class Profiler {
     private TimerTask profilerTask = null;
     private Timer profilerTimer = null;
     public boolean print = false;
+    public boolean running = false;
 
     private Profiler() {
         startTimes = new HashMap<>();
         durations = new HashMap<>();
         lastDurations = new HashMap<>();
-        this.startProfiling();
     }
 
     public void startTimer(String s) {
@@ -44,6 +44,7 @@ public class Profiler {
     }
 
     public void startProfiling() {
+        running = true;
         if (profilerTimer != null)
             profilerTimer.cancel();
 
