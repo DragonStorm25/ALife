@@ -14,7 +14,7 @@ import src.util.Vector2D;
 public class PhysicsEngine {
     public static final double INTERACTION_DISTANCE = 10;
 
-    public QuadTree particles;
+    private QuadTree particles;
     private double deltaTime;
     private Map<Integer, Vector2D> particleIdToForce;
     public Map<Integer, Particle> idToParticle;
@@ -22,7 +22,7 @@ public class PhysicsEngine {
     private Timer physicsTimer = null;
 
     public PhysicsEngine(double dt) {
-        particles = new QuadTree(Vector2D.ZERO(), new Vector2D(128, 128));
+        particles = new QuadTree(Vector2D.ZERO(), new Vector2D(1024, 1024));
         this.deltaTime = dt;
         this.particleIdToForce = new HashMap<>();
         this.idToParticle = new HashMap<>();
@@ -48,7 +48,6 @@ public class PhysicsEngine {
                 }
             }
             particleIdToForce.put(p.getId(), sumForce);
-            idToParticle.put(p.getId(), p);
         }
         if (qt.topLeft != null) doTimeStep(qt.topLeft);
         if (qt.topRight != null) doTimeStep(qt.topRight);
@@ -96,5 +95,19 @@ public class PhysicsEngine {
 
         physicsTimer = new Timer("PhysicsTimer");//create a new Timer
         physicsTimer.scheduleAtFixedRate(physicsTask, 0, (int) (deltaTime * 1000));
+    }
+
+    public void insert(Particle p) {
+        this.particles.insert(p);
+        idToParticle.put(p.getId(), p);
+    }
+
+    public void remove(Particle p) {
+        this.particles.remove(p);
+        idToParticle.remove(p.getId());
+    }
+
+    public void move(Particle p, Vector2D newPos) {
+        this.particles.move(p, newPos);
     }
 }
