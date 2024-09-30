@@ -8,15 +8,20 @@ import javax.swing.*;
 import src.particles.Particle;
 import src.physics.PhysicsEngine;
 
-public class RendererPanel extends JPanel implements MouseWheelListener {
+public class RendererPanel extends JPanel implements MouseWheelListener, MouseListener, MouseMotionListener  {
     private PhysicsEngine pe;
+    private Point startPoint;
     private double zoomFactor = 1;
     private double prevZoomFactor = 1;
     private double xOffset, yOffset;
+    private double xDiff, yDiff;
+    private boolean mousePressed = false;
 
     public RendererPanel(PhysicsEngine pe) {
         this.pe = pe;
         this.addMouseWheelListener(this);
+        this.addMouseMotionListener(this);
+        this.addMouseListener(this);
     }
 
     @Override
@@ -37,7 +42,15 @@ public class RendererPanel extends JPanel implements MouseWheelListener {
         yOffset = (zoomDiv) * (yOffset) + (1 - zoomDiv) * yRel;
 
         at.translate(xOffset, yOffset);
+        at.translate(xDiff, yDiff);
         at.scale(zoomFactor, zoomFactor);
+
+        if (!mousePressed) {
+            xOffset += xDiff;
+            yOffset += yDiff;
+            xDiff = 0;
+            yDiff = 0;
+        }
 
         prevZoomFactor = zoomFactor;
 
@@ -59,4 +72,40 @@ public class RendererPanel extends JPanel implements MouseWheelListener {
         if(e.getWheelRotation() > 0)
             this.zoomFactor /= 1.1;
     }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        if (mousePressed) {
+            xDiff = e.getX() - startPoint.getX();
+            yDiff = e.getY() - startPoint.getY();
+        } else {
+            xDiff = 0;
+            yDiff = 0;
+        }
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {}
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        mousePressed = true;
+        startPoint = e.getPoint();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        mousePressed = false;
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+
+    @Override
+    public void mouseExited(MouseEvent e) {}
 }
