@@ -33,6 +33,22 @@ public class QuadTree {
         this.id = ID_COUNTER++;
     }
 
+    public void makeTopLeft() {
+        topLeft = new QuadTree(this, this.minPoint.clone(), this.midPoint.clone());
+    }
+
+    public void makeTopRight() {
+        topRight = new QuadTree(this, new Vector2D(this.midPoint.getX(), this.minPoint.getY()), new Vector2D(this.maxPoint.getX(), this.midPoint.getY()));
+    }
+
+    public void makeBottomLeft() {
+        bottomLeft = new QuadTree(this, new Vector2D(this.minPoint.getX(), this.midPoint.getY()), new Vector2D(this.midPoint.getX(), this.maxPoint.getY()));
+    }
+
+    public void makeBottomRight() {
+        topRight = new QuadTree(this, new Vector2D(this.midPoint.getX(), this.minPoint.getY()), new Vector2D(this.maxPoint.getX(), this.midPoint.getY()));
+    }
+
     public void insert(Particle p) {
         if (this.isFull()) { // Needs to be split
             if (!inBoundary(p.getPosition()))
@@ -48,21 +64,21 @@ public class QuadTree {
             if (p.getPosition().getX() < this.midPoint.getX()) { // Left
                 if (p.getPosition().getY() < this.midPoint.getY()) { // Top left
                     if (topLeft == null)
-                        topLeft = new QuadTree(this, this.minPoint.clone(), this.midPoint.clone());
+                        this.makeTopLeft();
                     topLeft.insert(p);
                 } else { // Bottom left
                     if (bottomLeft == null)
-                        bottomLeft = new QuadTree(this, new Vector2D(this.minPoint.getX(), this.midPoint.getY()), new Vector2D(this.midPoint.getX(), this.maxPoint.getY()));
+                        this.makeBottomLeft();
                     bottomLeft.insert(p);
                 }
             } else { // Right
                 if (p.getPosition().getY() < this.midPoint.getY()) { // Top right
                     if (topRight == null)
-                        topRight = new QuadTree(this, new Vector2D(this.midPoint.getX(), this.minPoint.getY()), new Vector2D(this.maxPoint.getX(), this.midPoint.getY()));
+                        this.makeTopRight();
                     topRight.insert(p);
                 } else { // Bottom right
                     if (bottomRight == null)
-                        bottomRight = new QuadTree(this, this.midPoint.clone(), this.maxPoint.clone());
+                        this.makeBottomRight();
                     bottomRight.insert(p);
                 }
             }
@@ -205,7 +221,10 @@ public class QuadTree {
         if (pos.getX() < this.midPoint.getX()) { // Left
             if (pos.getY() < this.midPoint.getY()) { // Top left
                 if (topLeft == null)
-                    return this;
+                    if (this.isFull()) {
+                        topLeft = new QuadTree(this, this.minPoint.clone(), this.midPoint.clone());
+                    } else
+                        return this;
                 if (!topLeft.isFull())
                     return topLeft;
                 return topLeft.firstEmptyTreeWithPoint(pos);
