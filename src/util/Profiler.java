@@ -13,11 +13,13 @@ public class Profiler {
     private Map<String, Long> lastDurations;
     private TimerTask profilerTask = null;
     private Timer profilerTimer = null;
+    public boolean print = false;
 
     private Profiler() {
         startTimes = new HashMap<>();
         durations = new HashMap<>();
         lastDurations = new HashMap<>();
+        this.startProfiling();
     }
 
     public void startTimer(String s) {
@@ -46,6 +48,9 @@ public class Profiler {
             @Override
             public void run() {
                 reset();
+                if (print)
+                    for (String s : getProfile().keySet())
+                        System.out.println(s + " " + getProfile().get(s)/1e6);
             }
         };
 
