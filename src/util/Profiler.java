@@ -54,8 +54,14 @@ public class Profiler {
             public void run() {
                 reset();
                 if (print) {
-                    for (String s : getProfile().keySet())
-                        System.out.println(s + ": " + getProfile().get(s)/1e6);
+                    int longestLength = 0;
+                    for (String s : getProfile().keySet()) {
+                        if (s.length() > longestLength)
+                            longestLength = s.length();
+                    }
+                    for (String s : getProfile().keySet()) {
+                        System.out.println(s + ":" + " ".repeat(longestLength - s.length() + 4) + getProfile().get(s)/1e6);
+                    }
                     System.out.println("------------");
                 }
             }
