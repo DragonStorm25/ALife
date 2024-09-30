@@ -16,6 +16,7 @@ public class Renderer {
     public Renderer(PhysicsEngine pe) {
         this.frame = new JFrame("ALife");
         this.panel = new RendererPanel(pe);
+        this.panel.setSize(1024, 1024);
         this.frame.add(this.panel);
         this.frame.setSize(1024, 1024);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
