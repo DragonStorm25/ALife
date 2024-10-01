@@ -8,11 +8,11 @@ import src.particles.Particle;
 
 public class QuadTree {
     private static final double MIN_SIZE = 1;
+    private static final int MAX_PARTICLES_BEFORE_SPLIT = 10;
     private static int ID_COUNTER = 0;
 
     public Vector2D minPoint, maxPoint, midPoint;
     public List<Particle> particles;
-    public int maxParticlesBeforeSplit = 10;
     public QuadTree parent;
     public QuadTree topLeft, topRight, bottomLeft, bottomRight;
     private final int id;
@@ -277,9 +277,9 @@ public class QuadTree {
     public void merge() {
         QuadTree[] quads = {this.topLeft, this.topRight, this.bottomLeft, this.bottomRight};
         for (int i = 0; i < quads.length; i++) {
-            if (quads[i] == null)
+            if (quads[i] == null || quads[i].particles.size() == 0)
                 continue;
-            int spaceLeft = this.maxParticlesBeforeSplit - this.particles.size();
+            int spaceLeft = MAX_PARTICLES_BEFORE_SPLIT - this.particles.size();
             for (int j = 0; j < Math.min(spaceLeft, quads[i].particles.size()); j++) {
                 Particle p = quads[i].particles.get(0);
                 quads[i].remove(p);
@@ -301,7 +301,7 @@ public class QuadTree {
     }
 
     public boolean isFull() {
-        return this.particles.size() >= this.maxParticlesBeforeSplit;
+        return this.particles.size() >= MAX_PARTICLES_BEFORE_SPLIT;
     }
 
     public String toString() {
