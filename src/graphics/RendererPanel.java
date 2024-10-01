@@ -17,7 +17,7 @@ public class RendererPanel extends JPanel implements MouseWheelListener, MouseLi
     private double xOffset, yOffset;
     private double xDiff, yDiff;
     private boolean mousePressed = false;
-    private boolean renderQuadTree = true;
+    private boolean renderQuadTree = false;
 
     public RendererPanel(PhysicsEngine pe) {
         this.pe = pe;
@@ -62,6 +62,8 @@ public class RendererPanel extends JPanel implements MouseWheelListener, MouseLi
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         g2d.setColor(Color.black);
+        g.drawRect((int)pe.particles.minPoint.getX(), (int)pe.particles.minPoint.getY(), 
+                    (int)(pe.particles.maxPoint.getX() - pe.particles.minPoint.getX()), (int)(pe.particles.maxPoint.getY() - pe.particles.minPoint.getY()));
         if (this.renderQuadTree)
             this.renderQuadTree(g2d, pe.particles);
 
