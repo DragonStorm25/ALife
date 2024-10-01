@@ -57,6 +57,7 @@ public class RendererPanel extends JPanel implements MouseWheelListener, MouseLi
         prevZoomFactor = zoomFactor;
 
         Graphics2D g2d = (Graphics2D) g;
+        AffineTransform resetTransform = g2d.getTransform();
         g2d.transform(at);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -65,9 +66,14 @@ public class RendererPanel extends JPanel implements MouseWheelListener, MouseLi
             this.renderQuadTree(g2d, pe.particles);
 
         g2d.setColor(Color.red);
+        g2d.setTransform(resetTransform);
         for (Particle p : pe.idToParticle.values()) {
-            g2d.fillOval((int)p.getPosition().getX(), (int)p.getPosition().getY(), p.getMass(), p.getMass());
+            double x = (p.getPosition().getX()) * zoomFactor + xOffset + xDiff;
+            double y = (p.getPosition().getY()) * zoomFactor + yOffset + yDiff;
+            double d = (p.getMass() *  zoomFactor);
+            g2d.fillOval((int)x, (int)y, (int)d, (int)d);
         }
+
     }
 
     public void renderQuadTree(Graphics g, QuadTree qt) {
