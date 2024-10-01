@@ -83,7 +83,8 @@ public class PhysicsEngine {
         
         p.setPosition(newPos);
         p.setVelocity(newVel);
-        this.particles.move(p, newPos);
+        if (newVel.getX() != 0 || newVel.getY() != 0)
+            this.particles.move(p, newPos);
     }
 
     public void startEngine() {
