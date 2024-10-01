@@ -30,32 +30,32 @@ public class PhysicsEngine {
 
     public void doTimeStep() {
         this.particleIdToForce.clear();
+        Profiler.SINGLETON.startTimer("TimeStep");
         doTimeStep(particles);
-        Profiler.SINGLETON.startTimer("ApplyForces");
         for (Integer id : idToParticle.keySet()) {
             doParticleTimeStep(idToParticle.get(id), particleIdToForce.containsKey(id) ? particleIdToForce.get(id) : Vector2D.ZERO());
         }
-        Profiler.SINGLETON.stopTimer("ApplyForces");
+        Profiler.SINGLETON.stopTimer("TimeStep");
         Profiler.SINGLETON.startTimer("TreeCleanup");
         this.particles.merge();
         Profiler.SINGLETON.stopTimer("TreeCleanup");
     }
 
     private void doTimeStep(QuadTree qt) {
-        Profiler.SINGLETON.startTimer("ForceCalculation");
         for (int i = 0; i < qt.particles.size(); i++) {
             Particle p = qt.particles.get(i);
             Vector2D sumForce = Vector2D.ZERO();
             if (p instanceof ChargedParticle) {
                 final List<Particle> nearbyParticles = particles.getParticlesWithinDistance(p.getPosition(), p.getInteractionDistance());
+                Profiler.SINGLETON.startTimer("ForceCalculation");
                 for (int j = 0; j < nearbyParticles.size(); j++) {
                     if (nearbyParticles.get(j) instanceof ChargedParticle)
                         sumForce = sumForce.plus(ChargedParticle.getChargeForce(((ChargedParticle)p), ((ChargedParticle)nearbyParticles.get(j))));
                 }
+                Profiler.SINGLETON.stopTimer("ForceCalculation");
             }
             particleIdToForce.put(p.getId(), sumForce);
         }
-        Profiler.SINGLETON.stopTimer("ForceCalculation");
         if (qt.topLeft != null) doTimeStep(qt.topLeft);
         if (qt.topRight != null) doTimeStep(qt.topRight);
         if (qt.bottomLeft != null) doTimeStep(qt.bottomLeft);
