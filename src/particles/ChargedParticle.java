@@ -25,10 +25,10 @@ public class ChargedParticle extends Particle {
 
     public static Vector2D getChargeForce(ChargedParticle c1, ChargedParticle c2) {
         final Vector2D vectorBetween = c1.getPosition().plus(c2.getPosition().scale(-1));
-        final double distance = vectorBetween.getMagnitude();
-        if (distance > MAX_RANGE * Math.sqrt(c1.charge) || distance < MIN_RANGE) 
+        final double distanceSquared = vectorBetween.getMagnitudeSquared();
+        if (distanceSquared > MAX_RANGE * MAX_RANGE * c1.charge || distanceSquared < MIN_RANGE * MIN_RANGE) 
             return Vector2D.ZERO();
-        final double mag = (CHARGE_CONSTANT * c1.charge * c2.charge) / (distance * distance);
+        final double mag = (CHARGE_CONSTANT * c1.charge * c2.charge) / distanceSquared;
         return vectorBetween.normalized().scale(mag);
     }
 
