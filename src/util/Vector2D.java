@@ -18,6 +18,10 @@ public class Vector2D {
         return Math.sqrt(x*x + y*y);
     }
 
+    public double getMagnitudeSquared() {
+        return x*x + y*y;
+    }
+
     public double getX() {
         return x;
     }
