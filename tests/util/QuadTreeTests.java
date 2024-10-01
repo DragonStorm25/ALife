@@ -104,4 +104,25 @@ public class QuadTreeTests {
         assertTrue(qt.bottomLeft == null);
         assertTrue(qt.bottomRight == null);
     }
+
+    @Test
+    void treeMerge() {
+        QuadTree qt = new QuadTree(Vector2D.ZERO(), new Vector2D(256, 256));
+        Particle[] particles = new Particle[QuadTree.MAX_PARTICLES_BEFORE_SPLIT];
+        for (int i = 0; i < QuadTree.MAX_PARTICLES_BEFORE_SPLIT; i++) {
+            Particle p = new Particle(new Vector2D(16 + i, 16+i), 0);
+            qt.insert(p);
+            particles[i] = p;
+        }
+        Particle p = new Particle(new Vector2D(150, 150), 0);
+        qt.insert(p);
+        assertTrue(qt.bottomRight != null);
+        qt.remove(p);
+        assertTrue(qt.bottomRight != null);
+        qt.merge();
+        assertTrue(qt.bottomRight == null);
+        for (int i = 0; i < QuadTree.MAX_PARTICLES_BEFORE_SPLIT; i++) {
+            assertTrue(qt.particleAtPoint(new Vector2D(16 + i, 16+i)));
+        }
+    }
 }
