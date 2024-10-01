@@ -8,7 +8,7 @@ import src.particles.Particle;
 
 public class QuadTree {
     private static final double MIN_SIZE = 1;
-    private static final int MAX_PARTICLES_BEFORE_SPLIT = 4;
+    private static final int MAX_PARTICLES_BEFORE_SPLIT = 8;
     private static int ID_COUNTER = 0;
 
     public Vector2D minPoint, maxPoint, midPoint;
