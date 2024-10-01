@@ -109,13 +109,17 @@ public class RendererPanel extends JPanel implements MouseWheelListener, MouseLi
 
     @Override
     public void mousePressed(MouseEvent e) {
-        mousePressed = true;
-        startPoint = e.getPoint();
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            mousePressed = true;
+            startPoint = e.getPoint();
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        mousePressed = false;
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            mousePressed = false;
+        }
     }
 
     @Override
