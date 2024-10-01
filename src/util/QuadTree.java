@@ -209,7 +209,13 @@ public class QuadTree {
         if (bottomLeft) particles.addAll(this.bottomLeft.rectQuery(min, max));
         if (bottomRight) particles.addAll(this.bottomRight.rectQuery(min, max));
 
-        particles.addAll(this.particles);
+        for (Particle p : this.particles) {
+            if (p.getPosition().getX() >= min.getX() && p.getPosition().getX() < max.getX()) { 
+                if (p.getPosition().getY() >= min.getY() && p.getPosition().getY() < max.getY()) {
+                    particles.add(p);
+                }
+            }
+        }
 
         return particles;
     }
