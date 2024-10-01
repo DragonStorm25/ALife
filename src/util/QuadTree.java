@@ -12,7 +12,7 @@ public class QuadTree {
 
     public Vector2D minPoint, maxPoint, midPoint;
     public List<Particle> particles;
-    public int maxParticlesBeforeSplit = 10;
+    public int maxParticlesBeforeSplit = 1;
     public QuadTree parent;
     public QuadTree topLeft, topRight, bottomLeft, bottomRight;
     private final int id;
@@ -30,6 +30,7 @@ public class QuadTree {
         this.minPoint = min;
         this.maxPoint = max;
         this.midPoint = min.plus(max).scale(0.5);
+        this.parent = parent;
         this.id = ID_COUNTER++;
     }
 
@@ -91,8 +92,10 @@ public class QuadTree {
         if (!inBoundary(p.getPosition()))
             return;
 
-        if (this.particles.contains(p))
+        if (this.particles.contains(p)) {
             this.particles.remove(p);
+            return;
+        }
 
         // Now to check which quad it's in
         if (p.getPosition().getX() < this.midPoint.getX()) { // Left
@@ -125,15 +128,16 @@ public class QuadTree {
         if (!inBoundary(newPos))
             return;
 
-        QuadTree particleQuad = this.firstEmptyTreeWithPoint(p.getPosition());
+        QuadTree particleQuad = this.searchForParticle(p);
         QuadTree newPosQuad = this.firstEmptyTreeWithPoint(newPos);
 
-        if (particleQuad.equals(newPosQuad)) { // No movement to other quad! Easy
+        if (particleQuad != null && particleQuad.equals(newPosQuad)) { // No movement to other quad! Easy
             p.setPosition(newPos);
         } else { // Need to move particle to other quad
-            this.remove(p);
+            particleQuad.remove(p);
             p.setPosition(newPos);
             newPosQuad.insert(p);
+            particleQuad.merge();
         }
     }
 
@@ -218,51 +222,86 @@ public class QuadTree {
     }
 
     private QuadTree firstEmptyTreeWithPoint(Vector2D pos) {
+        if (!this.isFull() && this.inBoundary(pos))
+            return this;
+
         if (pos.getX() < this.midPoint.getX()) { // Left
             if (pos.getY() < this.midPoint.getY()) { // Top left
                 if (topLeft == null)
-                    if (this.isFull()) {
-                        this.makeTopLeft();
-                    } else
-                        return this;
-                if (!topLeft.isFull())
-                    return topLeft;
+                    this.makeTopLeft();
                 return topLeft.firstEmptyTreeWithPoint(pos);
             } else { // Bottom left
                 if (bottomLeft == null)
-                    if (this.isFull()) {
-                        this.makeBottomLeft();
-                    } else
-                        return this;
-                if (!bottomLeft.isFull())
-                    return bottomLeft;
+                    this.makeBottomLeft();
                 return bottomLeft.firstEmptyTreeWithPoint(pos);
             }
         } else { // Right
             if (pos.getY() < this.midPoint.getY()) { // Top right
                 if (topRight == null)
-                    if (this.isFull()) {
-                        this.makeTopRight();
-                    } else
-                        return this;
-                if (!topRight.isFull())
-                    return topRight;
+                    this.makeTopRight();
                 return topRight.firstEmptyTreeWithPoint(pos);
             } else { // Bottom right
                 if (bottomRight == null)
-                    if (this.isFull()) {
-                        this.makeBottomRight();
-                    } else 
-                        return this;
-                if (!bottomRight.isFull())
-                    return bottomRight;
+                    this.makeBottomRight();
                 return bottomRight.firstEmptyTreeWithPoint(pos);
             }
         }
     }
 
+    public QuadTree searchForParticle(Particle p) {
+        if (this.particles.contains(p))
+            return this;
+
+        if (p.getPosition().getX() < this.midPoint.getX()) { // Left
+            if (p.getPosition().getY() < this.midPoint.getY()) { // Top left
+                return topLeft.searchForParticle(p);
+            } else { // Bottom left
+                return bottomLeft.searchForParticle(p);
+            }
+        } else { // Right
+            if (p.getPosition().getY() < this.midPoint.getY()) { // Top right
+                return topRight.searchForParticle(p);
+            } else { // Bottom right
+                return bottomRight.searchForParticle(p);
+            }
+        }
+    }
+
+    private void removeQuad(QuadTree qt) {
+        if (this.topLeft != null && this.topLeft.equals(qt)) this.topLeft = null;
+        if (this.topRight != null && this.topRight.equals(qt)) this.topRight = null;
+        if (this.bottomLeft != null && this.bottomLeft.equals(qt)) this.bottomLeft = null;
+        if (this.bottomRight != null && this.bottomRight.equals(qt)) this.bottomRight = null;
+    }
+
+    public void merge() {
+        QuadTree[] quads = {this.topLeft, this.topRight, this.bottomLeft, this.bottomRight};
+        for (int i = 0; i < quads.length; i++) {
+            if (quads[i] == null)
+                continue;
+            int spaceLeft = this.maxParticlesBeforeSplit - this.particles.size();
+            for (int j = 0; j < Math.min(spaceLeft, quads[i].particles.size()); j++) {
+                Particle p = quads[i].particles.get(0);
+                quads[i].remove(p);
+                this.insert(p);
+            }
+            quads[i].merge();
+        }
+        this.prune();
+    }
+
+    public void prune() {
+        if (this.topLeft != null) this.topLeft.prune();
+        if (this.topRight != null) this.topRight.prune();
+        if (this.bottomLeft != null) this.bottomLeft.prune();
+        if (this.bottomRight != null) this.bottomRight.prune();
+
+        if (this.particles.size() == 0 && this.topLeft == null && this.topRight == null && this.bottomLeft == null && this.bottomRight == null && this.parent != null)
+            this.parent.removeQuad(this);
+    }
+
     public boolean isFull() {
-        return this.particles.size() == this.maxParticlesBeforeSplit;
+        return this.particles.size() >= this.maxParticlesBeforeSplit;
     }
 
     public String toString() {
