@@ -73,7 +73,7 @@ public class RendererPanel extends JPanel implements MouseWheelListener, MouseLi
             double x = (p.getPosition().getX()) * zoomFactor + xOffset + xDiff;
             double y = (p.getPosition().getY()) * zoomFactor + yOffset + yDiff;
             double d = (p.getMass() *  zoomFactor);
-            g2d.fillOval((int)x, (int)y, (int)d, (int)d);
+            g2d.fillOval((int)Math.round(x), (int)Math.round(y), (int)Math.round(d), (int)Math.round(d));
         }
 
     }
