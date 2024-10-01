@@ -83,7 +83,7 @@ public class QuadTreeTests {
     }
 
     @Test
-    void treeMerge() {
+    void treePrune() {
         QuadTree qt = new QuadTree(Vector2D.ZERO(), new Vector2D(256, 256));
         Particle[] particles = new Particle[100];
         for (int i = 0; i < particles.length; i++) {
@@ -91,14 +91,14 @@ public class QuadTreeTests {
             qt.insert(p);
             particles[i] = p;
         }
-        qt.merge();
+        qt.prune();
         for (int i = 0; i < particles.length; i++) {
             assertTrue(qt.particleAtPoint(new Vector2D(16 + i, 16+i)));
         }
         for (int i = 0; i < particles.length; i++) {
             qt.remove(particles[i]);
         }
-        qt.merge();
+        qt.prune();
         assertTrue(qt.topLeft == null);
         assertTrue(qt.topRight == null);
         assertTrue(qt.bottomLeft == null);
