@@ -71,9 +71,11 @@ public class QuadTreeTests {
     @Test
     void particleMove() {
         QuadTree qt = new QuadTree(Vector2D.ZERO(), new Vector2D(128, 128));
-        Particle p1 = new Particle(new Vector2D(16, 16), 0);
+        for (int i = 0; i < QuadTree.MAX_PARTICLES_BEFORE_SPLIT; i++) {
+            Particle p = new Particle(new Vector2D(16 + i, 16+i), 0);
+            qt.insert(p);
+        }
         Particle p2 = new Particle(new Vector2D(32, 32), 0);
-        qt.insert(p1);
         qt.insert(p2);
         qt.move(p2, new Vector2D(100, 100));
         assertEquals(qt.topLeft.particles.size(), 0);
