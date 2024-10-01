@@ -137,7 +137,6 @@ public class QuadTree {
             particleQuad.remove(p);
             p.setPosition(newPos);
             newPosQuad.insert(p);
-            particleQuad.merge();
         }
     }
 

@@ -36,6 +36,9 @@ public class PhysicsEngine {
             doParticleTimeStep(idToParticle.get(id), particleIdToForce.containsKey(id) ? particleIdToForce.get(id) : Vector2D.ZERO());
         }
         Profiler.SINGLETON.stopTimer("ApplyForces");
+        Profiler.SINGLETON.startTimer("TreeCleanup");
+        this.particles.merge();
+        Profiler.SINGLETON.stopTimer("TreeCleanup");
     }
 
     private void doTimeStep(QuadTree qt) {
