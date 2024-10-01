@@ -30,12 +30,14 @@ public class PhysicsEngine {
 
     public void doTimeStep() {
         this.particleIdToForce.clear();
-        Profiler.SINGLETON.startTimer("TimeStep");
+        Profiler.SINGLETON.startTimer("ForceTimeStep");
         doTimeStep(particles);
+        Profiler.SINGLETON.stopTimer("ForceTimeStep");
+        Profiler.SINGLETON.startTimer("MoveTimeStep");
         for (Integer id : idToParticle.keySet()) {
             doParticleTimeStep(idToParticle.get(id), particleIdToForce.containsKey(id) ? particleIdToForce.get(id) : Vector2D.ZERO());
         }
-        Profiler.SINGLETON.stopTimer("TimeStep");
+        Profiler.SINGLETON.stopTimer("MoveTimeStep");
         Profiler.SINGLETON.startTimer("TreeCleanup");
         this.particles.merge();
         Profiler.SINGLETON.stopTimer("TreeCleanup");
