@@ -8,7 +8,7 @@ import src.particles.Particle;
 
 public class QuadTree {
     private static final double MIN_SIZE = 1;
-    private static final int MAX_PARTICLES_BEFORE_SPLIT = 10;
+    private static final int MAX_PARTICLES_BEFORE_SPLIT = 4;
     private static int ID_COUNTER = 0;
 
     public Vector2D minPoint, maxPoint, midPoint;
@@ -177,9 +177,7 @@ public class QuadTree {
         Profiler.SINGLETON.startTimer("ActualParticleFinding");
         List<Particle> actualParticles = new ArrayList<>();
         for (Particle p : possibleParticles) {
-            final double px = p.getPosition().getX(), py = p.getPosition().getY();
-            final double pox = point.getX(), poy = point.getY();
-            if ((px - pox) * (px - pox) + (py - poy) * (py - poy) < distance*distance)
+            if (p.getPosition().plus(point.scale(-1)).getMagnitudeSquared() < distance*distance)
                 actualParticles.add(p);
         }
         Profiler.SINGLETON.stopTimer("ActualParticleFinding");
