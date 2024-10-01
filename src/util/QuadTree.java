@@ -209,6 +209,7 @@ public class QuadTree {
         if (bottomLeft) particles.addAll(this.bottomLeft.rectQuery(min, max));
         if (bottomRight) particles.addAll(this.bottomRight.rectQuery(min, max));
 
+        Profiler.SINGLETON.startTimer("PossibleParticleChecking");
         for (Particle p : this.particles) {
             if (p.getPosition().getX() >= min.getX() && p.getPosition().getX() < max.getX()) { 
                 if (p.getPosition().getY() >= min.getY() && p.getPosition().getY() < max.getY()) {
@@ -216,6 +217,7 @@ public class QuadTree {
                 }
             }
         }
+        Profiler.SINGLETON.stopTimer("PossibleParticleChecking");
 
         return particles;
     }
