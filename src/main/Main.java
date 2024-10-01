@@ -13,10 +13,10 @@ public class Main {
         // Profiler.SINGLETON.print = true;
         // Profiler.SINGLETON.startProfiling();
 
-        PhysicsEngine pe = new PhysicsEngine(0.1);
+        PhysicsEngine pe = new PhysicsEngine(0.01);
         Renderer r = new Renderer(pe);
         for (int i = 0; i < 10000; i++) {
-            pe.insert(new ChargedParticle(new Vector2D(512+(int)((Math.random()-0.5)*512), 512+(int)((Math.random()-0.5)*512)), 2, 2));
+            pe.insert(new ChargedParticle(new Vector2D(512+(int)((Math.random()-0.5)*512), 512+(int)((Math.random()-0.5)*512)), 2, 20));
         }
         // Particle p1 = new ChargedParticle(new Vector2D(200, 100), 10, 20);
         // Particle p2 = new ChargedParticle(new Vector2D(100, 100), 10, 20);
