@@ -175,7 +175,7 @@ public class QuadTree {
         List<Particle> possibleParticles = this.rectQuery(point.plus(new Vector2D(-distance, -distance)), point.plus(new Vector2D(distance, distance)));
         Profiler.SINGLETON.stopTimer("PossibleParticleFinding");
         Profiler.SINGLETON.startTimer("ActualParticleFinding");
-        List<Particle> actualParticles = new ArrayList<>();
+        List<Particle> actualParticles = new ArrayList<>((int)(possibleParticles.size()*Math.PI/4));
         for (Particle p : possibleParticles) {
             if (p.getPosition().plus(point.scale(-1)).getMagnitudeSquared() < distance*distance)
                 actualParticles.add(p);
@@ -185,7 +185,7 @@ public class QuadTree {
     }
 
     public List<Particle> rectQuery(Vector2D min, Vector2D max) {
-        boolean topLeft = true, topRight = true, bottomLeft = true, bottomRight = true;
+        boolean topLeft = this.topLeft != null, topRight = this.topRight != null, bottomLeft = this.bottomLeft != null, bottomRight = this.bottomRight != null;
         final List<Particle> particles = new ArrayList<>();
         if (min.getX() >= midPoint.getX()) { // Only have to search right half
             topLeft = false;
@@ -204,10 +204,10 @@ public class QuadTree {
             topRight = false;
         }
 
-        if (topLeft && this.topLeft != null) particles.addAll(this.topLeft.rectQuery(min, max));
-        if (topRight && this.topRight != null) particles.addAll(this.topRight.rectQuery(min, max));
-        if (bottomLeft && this.bottomLeft != null) particles.addAll(this.bottomLeft.rectQuery(min, max));
-        if (bottomRight && this.bottomRight != null) particles.addAll(this.bottomRight.rectQuery(min, max));
+        if (topLeft) particles.addAll(this.topLeft.rectQuery(min, max));
+        if (topRight) particles.addAll(this.topRight.rectQuery(min, max));
+        if (bottomLeft) particles.addAll(this.bottomLeft.rectQuery(min, max));
+        if (bottomRight) particles.addAll(this.bottomRight.rectQuery(min, max));
 
         particles.addAll(this.particles);
 
