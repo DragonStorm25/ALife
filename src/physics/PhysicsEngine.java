@@ -33,7 +33,7 @@ public class PhysicsEngine {
         doTimeStep(particles);
         Profiler.SINGLETON.startTimer("ApplyForces");
         for (Integer id : idToParticle.keySet()) {
-            doParticleTimeStep(idToParticle.get(id), particleIdToForce.get(id));
+            doParticleTimeStep(idToParticle.get(id), particleIdToForce.containsKey(id) ? particleIdToForce.get(id) : Vector2D.ZERO());
         }
         Profiler.SINGLETON.stopTimer("ApplyForces");
     }
@@ -81,7 +81,6 @@ public class PhysicsEngine {
         final Vector2D newVel = p.getVelocity().plus(deltaV);
         final Vector2D newPos = p.getPosition().plus(newVel.scale(this.deltaTime));
         
-        p.setPosition(newPos);
         p.setVelocity(newVel);
         if (newVel.getX() != 0 || newVel.getY() != 0)
             this.particles.move(p, newPos);
