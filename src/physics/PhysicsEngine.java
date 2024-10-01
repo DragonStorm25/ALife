@@ -20,6 +20,7 @@ public class PhysicsEngine {
     public Map<Integer, Particle> idToParticle;
     private TimerTask physicsTask = null;
     private Timer physicsTimer = null;
+    private boolean wallBounce = true;
 
     public PhysicsEngine(double dt) {
         particles = new QuadTree(Vector2D.ZERO(), new Vector2D(1024, 1024));
@@ -83,9 +84,31 @@ public class PhysicsEngine {
 
         // (k1 + 2*k2 + 2*k3 + k4)/6
         final Vector2D deltaV = k1.plus(k2.scale(2)).plus(k3.scale(2)).plus(k4).scale(1/6.0);
-        final Vector2D newVel = p.getVelocity().plus(deltaV);
-        final Vector2D newPos = p.getPosition().plus(newVel.scale(this.deltaTime));
+        Vector2D newVel = p.getVelocity().plus(deltaV);
+        Vector2D newPos = p.getPosition().plus(newVel.scale(this.deltaTime));
         
+        if (wallBounce) {
+            if (newPos.getX() < particles.minPoint.getX()) {
+                newPos = new Vector2D(newPos.getX() + 2 * (particles.minPoint.getX() - newPos.getX()), newPos.getY());
+                newVel = new Vector2D(-newVel.getX(), newVel.getY());
+            }
+
+            if (newPos.getX() > particles.maxPoint.getX()) {
+                newPos = new Vector2D(newPos.getX() - 2 * (newPos.getX() - particles.maxPoint.getX()), newPos.getY());
+                newVel = new Vector2D(-newVel.getX(), newVel.getY());
+            }
+
+            if (newPos.getY() < particles.minPoint.getY()) {
+                newPos = new Vector2D(newPos.getX(), newPos.getY() + 2 * (particles.minPoint.getY() - newPos.getY()));
+                newVel = new Vector2D(newVel.getX(), -newVel.getY());
+            }
+
+            if (newPos.getY() > particles.maxPoint.getY()) {
+                newPos = new Vector2D(newPos.getX(), newPos.getY() - 2 * (newPos.getY() - particles.maxPoint.getY()));
+                newVel = new Vector2D(newVel.getX(), -newVel.getY());
+            }
+        }
+
         p.setVelocity(newVel);
         if (newVel.getX() != 0 || newVel.getY() != 0)
             this.particles.move(p, newPos);
