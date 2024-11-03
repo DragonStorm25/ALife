@@ -3,7 +3,7 @@ package src.util;
 public class Vector2D {
     public static final Vector2D ZERO () {return new Vector2D(0, 0);}
 
-    private double x, y;
+    private final double x, y;
 
     public Vector2D(double x, double y) {
         this.x = x;
