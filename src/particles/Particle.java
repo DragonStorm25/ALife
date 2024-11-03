@@ -35,7 +35,7 @@ public class Particle {
     }
 
     public Vector2D getVelocity() {
-        return this.vel.clone();
+        return this.vel;
     }
 
     public void setVelocity(Vector2D vel) {
