@@ -27,7 +27,7 @@ public class Particle {
     }
 
     public Vector2D getPosition() {
-        return this.pos.clone();
+        return this.pos;
     }
 
     public void setPosition(Vector2D pos) {
