@@ -10,8 +10,8 @@ import src.util.Vector2D;
 public class Main {
     
     public static void main(String[] args) {
-        // Profiler.SINGLETON.print = true;
-        // Profiler.SINGLETON.startProfiling();
+        Profiler.SINGLETON.print = true;
+        Profiler.SINGLETON.startProfiling();
 
         PhysicsEngine pe = new PhysicsEngine(0.01);
         Renderer r = new Renderer(pe);
