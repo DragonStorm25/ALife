@@ -35,7 +35,7 @@ public class QuadTree {
     }
 
     public void makeTopLeft() {
-        topLeft = new QuadTree(this, this.minPoint.clone(), this.midPoint.clone());
+        topLeft = new QuadTree(this, this.minPoint, this.midPoint);
     }
 
     public void makeTopRight() {
@@ -47,7 +47,7 @@ public class QuadTree {
     }
 
     public void makeBottomRight() {
-        bottomRight = new QuadTree(this, this.midPoint.clone(), this.maxPoint.clone());
+        bottomRight = new QuadTree(this, this.midPoint, this.maxPoint);
     }
 
     public void insert(Particle p) {
