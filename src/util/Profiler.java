@@ -15,9 +15,9 @@ public class Profiler {
     private TimerTask profilerTask = null;
     private Timer profilerTimer = null;
     private int cyclesRun = 0;
+    private boolean running = false;
     public final int tickInSeconds = 1;
     public boolean print = false;
-    public boolean running = false;
 
     private Profiler() {
         startTimes = new HashMap<>();
@@ -100,5 +100,9 @@ public class Profiler {
 
     public Map<String, Long> getProfile() {
         return lastDurations;
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 }

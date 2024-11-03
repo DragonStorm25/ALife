@@ -127,7 +127,7 @@ public class PhysicsEngine {
         };
 
         physicsTimer = new Timer("PhysicsTimer");//create a new Timer
-        physicsTimer.scheduleAtFixedRate(physicsTask, 0, (int) ((Profiler.SINGLETON.running ? Profiler.SINGLETON.tickInSeconds : deltaTime) * 1000));
+        physicsTimer.scheduleAtFixedRate(physicsTask, 0, (int) ((Profiler.SINGLETON.isRunning() ? Profiler.SINGLETON.tickInSeconds : deltaTime) * 1000));
     }
 
     public void insert(Particle p) {
