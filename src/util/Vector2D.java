@@ -10,10 +10,6 @@ public class Vector2D {
         this.y = y;
     }
 
-    public Vector2D clone() {
-        return new Vector2D(x, y);
-    }
-
     public double getMagnitude() {
         return Math.sqrt(x*x + y*y);
     }
