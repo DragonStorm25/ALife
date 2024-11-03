@@ -27,10 +27,12 @@ public class Profiler {
     }
 
     public void startTimer(String s) {
+        if (!running) return;
         startTimes.put(s, System.nanoTime());
     }
 
     public void stopTimer(String s) {
+        if (!running) return;
         if (startTimes.containsKey(s)) {
             if (durations.containsKey(s)) 
                 durations.put(s, durations.get(s) + System.nanoTime() - startTimes.get(s));
