@@ -1,20 +1,20 @@
 package tests.util;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import src.particles.Particle;
 import src.util.QuadTree;
 import src.util.Vector2D;
 
 public class QuadTreeTests {
-    
+
     @Test
-    void particleInsertion() {
+    public void particleInsertion() {
         QuadTree qt = new QuadTree(Vector2D.ZERO(), new Vector2D(128, 128));
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++){
@@ -29,7 +29,7 @@ public class QuadTreeTests {
     }
 
     @Test
-    void particlesWithinDistance() {
+    public void particlesWithinDistance() {
         QuadTree qt = new QuadTree(Vector2D.ZERO(), new Vector2D(128, 128));
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++){
@@ -45,8 +45,8 @@ public class QuadTreeTests {
         assertTrue(nearbyList.size() == expectedList.size() && nearbyList.containsAll(expectedList) && expectedList.containsAll(nearbyList));
     }
 
-    @Test 
-    void particleRemoval() {
+    @Test
+    public void particleRemoval() {
         QuadTree qt = new QuadTree(Vector2D.ZERO(), new Vector2D(128, 128));
         Particle removedParticle = null;
         for (int i = 0; i < 10; i++) {
@@ -69,7 +69,7 @@ public class QuadTreeTests {
     }
 
     @Test
-    void particleMove() {
+    public void particleMove() {
         QuadTree qt = new QuadTree(Vector2D.ZERO(), new Vector2D(128, 128));
         for (int i = 0; i < QuadTree.MAX_PARTICLES_BEFORE_SPLIT; i++) {
             Particle p = new Particle(new Vector2D(16 + i, 16+i), 0);
@@ -83,7 +83,7 @@ public class QuadTreeTests {
     }
 
     @Test
-    void treePrune() {
+    public void treePrune() {
         QuadTree qt = new QuadTree(Vector2D.ZERO(), new Vector2D(256, 256));
         Particle[] particles = new Particle[100];
         for (int i = 0; i < particles.length; i++) {
@@ -106,7 +106,7 @@ public class QuadTreeTests {
     }
 
     @Test
-    void treeMerge() {
+    public void treeMerge() {
         QuadTree qt = new QuadTree(Vector2D.ZERO(), new Vector2D(256, 256));
         Particle[] particles = new Particle[QuadTree.MAX_PARTICLES_BEFORE_SPLIT];
         for (int i = 0; i < QuadTree.MAX_PARTICLES_BEFORE_SPLIT; i++) {
